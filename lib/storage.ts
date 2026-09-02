@@ -96,7 +96,10 @@ export function getAllProperties(): Property[] {
   try {
     const rawCustom = localStorage.getItem(CUSTOM_PROPERTIES_KEY);
     const customProps: Property[] = rawCustom ? JSON.parse(rawCustom) : [];
-    return [...customProps, ...initialProperties];
+    // Deduplicate: custom properties override initial ones with the same ID
+    const customIds = new Set(customProps.map((p) => p.id));
+    const deduped = initialProperties.filter((p) => !customIds.has(p.id));
+    return [...customProps, ...deduped];
   } catch {
     return initialProperties;
   }

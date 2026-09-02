@@ -172,7 +172,7 @@ export default function PropertyFilters({
 
       {/* City / Location */}
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center space-x-1">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center space-x-1">
           <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />
           <span>City / Location</span>
         </label>
@@ -192,7 +192,7 @@ export default function PropertyFilters({
 
       {/* Property Category */}
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5 flex items-center space-x-1">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5 flex items-center space-x-1">
           <Building className="w-3.5 h-3.5 text-[#C5A059]" />
           <span>Property Type</span>
         </label>
@@ -220,7 +220,7 @@ export default function PropertyFilters({
 
       {/* Price Range */}
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center space-x-1">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center space-x-1">
           <IndianRupee className="w-3.5 h-3.5 text-[#C5A059]" />
           <span>Budget Range</span>
         </label>

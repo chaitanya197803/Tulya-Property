@@ -64,7 +64,7 @@ export default function HomePage() {
   return (
     <div className="space-y-10 sm:space-y-12">
       {/* 1. TOP MARKETPLACE SEARCH & QUICK DISCOVERY BAR */}
-      <section className="bg-gradient-to-b from-slate-100 to-slate-50 border-b border-slate-200/80 pt-5 pb-8 px-4 sm:px-6 lg:px-8">
+      <section className="bg-linear-to-b from-slate-100 to-slate-50 border-b border-slate-200/80 pt-5 pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-4">
           {/* Header headline tag */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -198,7 +198,7 @@ export default function HomePage() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500 opacity-80"
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B192C] via-[#0B192C]/40 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#0B192C] via-[#0B192C]/40 to-transparent" />
 
                 <div className="absolute inset-0 p-3 flex flex-col justify-end text-white">
                   <span className="text-[10px] uppercase font-bold text-[#C5A059] tracking-wider">

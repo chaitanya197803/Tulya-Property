@@ -248,8 +248,8 @@ export default function Footer() {
           <div className="flex items-start space-x-2.5">
             <MapPin className="w-4 h-4 text-[#C5A059] shrink-0 mt-0.5" />
             <span>
-              <strong>Corporate Office:</strong> 4th Floor, Tulya Towers, VIP Road, Near Magneto
-              Mall, Raipur, Chhattisgarh 492006
+              <strong>Corporate Office:</strong> Ground Floor, Station Road, City Center
+              Mall, Durg, Chhattisgarh 492006
             </span>
           </div>
           <div className="flex items-center space-x-2.5">

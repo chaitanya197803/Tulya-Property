@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import "leaflet/dist/leaflet.css";
 import {
-  MapPin,
   Navigation,
-  Layers,
+  ExternalLink,
   ZoomIn,
   ZoomOut,
   Maximize2,
-  ExternalLink,
-  Compass,
   CheckCircle2,
 } from "lucide-react";
 
@@ -32,213 +30,240 @@ export default function GoogleMap({
   height = "420px",
   interactive = true,
 }: GoogleMapProps) {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const tileLayerRef = useRef<any>(null);
+
   const [mapType, setMapType] = useState<"roadmap" | "satellite" | "terrain">("roadmap");
   const [currentZoom, setCurrentZoom] = useState(zoom);
-  const [isApiKeyLoaded, setIsApiKeyLoaded] = useState(false);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  // Deep link to Google Maps directions
+  // Deep links for Google Maps navigation & Street View
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
   const directMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+  const streetViewUrl = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${latitude},${longitude}`;
 
-  // If live Google Maps API key is configured, load dynamic map
+  const getTileUrl = (type: "roadmap" | "satellite" | "terrain") => {
+    switch (type) {
+      case "satellite":
+        return "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}";
+      case "terrain":
+        return "https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}";
+      case "roadmap":
+      default:
+        return "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}";
+    }
+  };
+
   useEffect(() => {
-    if (!apiKey) return;
+    if (typeof window === "undefined" || !mapContainerRef.current) return;
 
-    const scriptId = "google-maps-script";
-    let script = document.getElementById(scriptId) as HTMLScriptElement;
+    let isMounted = true;
 
-    if (!script) {
-      script = document.createElement("script");
-      script.id = scriptId;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
+    async function initMap() {
+      const L = (await import("leaflet")).default;
+
+      if (!isMounted || !mapContainerRef.current) return;
+
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+
+      const map = L.map(mapContainerRef.current, {
+        center: [latitude, longitude],
+        zoom: currentZoom,
+        zoomControl: false,
+        attributionControl: false,
+        dragging: interactive,
+        scrollWheelZoom: interactive,
+      });
+
+      const tileLayer = L.tileLayer(getTileUrl(mapType), {
+        maxZoom: 20,
+        subdomains: ["mt0", "mt1", "mt2", "mt3"],
+      }).addTo(map);
+
+      tileLayerRef.current = tileLayer;
+
+      // Custom Tulya Pin Icon
+      const pinHtml = `
+        <div style="transform: translate(-50%, -100%); position: relative; display: flex; flex-direction: column; align-items: center;">
+          <div style="background: #0B192C; color: #ffffff; padding: 6px 12px; border-radius: 12px; font-weight: 800; font-size: 11px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); border: 2px solid #C5A059; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
+            <span style="color: #C5A059;">📍</span>
+            <span>${propertyTitle || "Property Location"}</span>
+          </div>
+          <div style="width: 10px; height: 10px; background: #0B192C; transform: rotate(45deg); margin-top: -5px; border-right: 2px solid #C5A059; border-bottom: 2px solid #C5A059;"></div>
+          <div style="width: 14px; height: 6px; background: rgba(0,0,0,0.2); border-radius: 9999px; margin-top: 2px;"></div>
+        </div>
+      `;
+
+      const customIcon = L.divIcon({
+        html: pinHtml,
+        className: "custom-property-single-pin",
+        iconSize: [120, 40],
+        iconAnchor: [60, 40],
+        popupAnchor: [0, -42],
+      });
+
+      const marker = L.marker([latitude, longitude], { icon: customIcon }).addTo(map);
+
+      const popupHtml = `
+        <div style="padding: 10px; font-family: inherit;">
+          <strong style="color: #0B192C; font-size: 13px; display: block; margin-bottom: 4px;">${propertyTitle || "Tulya Verified Property"}</strong>
+          <p style="margin: 0 0 8px; font-size: 11px; color: #475569;">${address || ""}</p>
+          <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #0B192C; color: #ffffff; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none;">
+            Get Directions ↗
+          </a>
+        </div>
+      `;
+
+      marker.bindPopup(popupHtml);
+
+      mapInstanceRef.current = map;
     }
 
-    const initMap = () => {
-      if (window.google && window.google.maps && mapContainerRef.current) {
-        const map = new window.google.maps.Map(mapContainerRef.current, {
-          center: { lat: latitude, lng: longitude },
-          zoom: currentZoom,
-          mapTypeId: mapType,
-          disableDefaultUI: !interactive,
-          zoomControl: interactive,
-          fullscreenControl: interactive,
-        });
+    initMap();
 
-        const marker = new window.google.maps.Marker({
-          position: { lat: latitude, lng: longitude },
-          map: map,
-          title: propertyTitle || "Property Location",
-          animation: window.google.maps.Animation.DROP,
-        });
-
-        const infoWindow = new window.google.maps.InfoWindow({
-          content: `<div style="padding: 6px; font-family: sans-serif;">
-            <strong style="color: #0B192C; font-size: 13px;">${propertyTitle || "Tulya Verified Property"}</strong>
-            <p style="margin: 4px 0 0; font-size: 11px; color: #475569;">${address || ""}</p>
-          </div>`,
-        });
-
-        marker.addListener("click", () => {
-          infoWindow.open(map, marker);
-        });
-
-        setIsApiKeyLoaded(true);
+    return () => {
+      isMounted = false;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
       }
     };
+  }, [latitude, longitude, propertyTitle, address, interactive]);
 
-    if (window.google && window.google.maps) {
-      initMap();
-    } else {
-      script.onload = initMap;
+  // Update tile layer on mapType switch
+  useEffect(() => {
+    if (!mapInstanceRef.current || !tileLayerRef.current) return;
+
+    async function updateLayer() {
+      const L = (await import("leaflet")).default;
+      if (tileLayerRef.current && mapInstanceRef.current) {
+        mapInstanceRef.current.removeLayer(tileLayerRef.current);
+        const newLayer = L.tileLayer(getTileUrl(mapType), {
+          maxZoom: 20,
+          subdomains: ["mt0", "mt1", "mt2", "mt3"],
+        }).addTo(mapInstanceRef.current);
+        tileLayerRef.current = newLayer;
+      }
     }
-  }, [apiKey, latitude, longitude, currentZoom, mapType, interactive, propertyTitle, address]);
 
-  // Handle zoom in/out in fallback mode
-  const handleZoomIn = () => setCurrentZoom((prev) => Math.min(prev + 1, 20));
-  const handleZoomOut = () => setCurrentZoom((prev) => Math.max(prev - 1, 10));
+    updateLayer();
+  }, [mapType]);
+
+  const handleZoomIn = () => mapInstanceRef.current?.zoomIn();
+  const handleZoomOut = () => mapInstanceRef.current?.zoomOut();
+
+  const handleToggleFullscreen = () => {
+    if (!mapContainerRef.current) return;
+    if (!document.fullscreenElement) {
+      mapContainerRef.current.parentElement?.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
   return (
     <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-900 group">
-      {/* If Google Maps API is loaded with valid Key */}
-      {apiKey && isApiKeyLoaded ? (
-        <div ref={mapContainerRef} style={{ height }} className="w-full" />
-      ) : (
-        /* Rich Interactive Fallback Map with Visual Tiles, Pin Beacon, Coordinates HUD & Layer Switcher */
-        <div
-          style={{ height }}
-          className={`relative w-full overflow-hidden transition-all duration-300 ${
-            mapType === "satellite"
-              ? "bg-[#0b1b16]"
-              : mapType === "terrain"
-              ? "bg-[#e8ece9]"
-              : "bg-[#e5e9f0]"
-          }`}
-        >
-          {/* Subtle Grid / Street Vector Background Pattern */}
-          <div
-            className="absolute inset-0 opacity-40 pointer-events-none"
-            style={{
-              backgroundImage:
-                mapType === "satellite"
-                  ? "radial-gradient(circle at 50% 50%, rgba(20, 83, 45, 0.4) 0%, rgba(2, 6, 23, 0.9) 100%)"
-                  : "linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg, #cbd5e1 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
+      {/* Real Map Canvas */}
+      <div
+        ref={mapContainerRef}
+        style={{ height }}
+        className="w-full bg-slate-100 z-0"
+      />
 
-          {/* Road Vector lines simulation */}
-          <svg className="absolute inset-0 w-full h-full opacity-30 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#94a3b8" strokeWidth="16" />
-            <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#ffffff" strokeWidth="10" />
-            <line x1="30%" y1="0" x2="70%" y2="100%" stroke="#cbd5e1" strokeWidth="12" />
-            <circle cx="50%" cy="50%" r="90" fill="none" stroke="#38bdf8" strokeWidth="2" strokeDasharray="6,6" />
-          </svg>
-
-          {/* Center Pin & Pulsing Radar Marker */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-auto z-10">
-            {/* Animated Radar Pulse */}
-            <div className="absolute -bottom-1 w-12 h-6 bg-[#C5A059]/30 rounded-full animate-ping" />
-            <div className="absolute -bottom-1 w-8 h-4 bg-[#0B192C]/20 rounded-full" />
-
-            {/* Custom Tulya Pin Badge */}
-            <div className="relative flex flex-col items-center -translate-y-6">
-              <div className="bg-[#0B192C] text-white px-3 py-1.5 rounded-xl shadow-xl border-2 border-[#C5A059] flex items-center space-x-1.5 whitespace-nowrap animate-bounce">
-                <MapPin className="w-4 h-4 text-[#C5A059]" />
-                <span className="text-xs font-bold">{propertyTitle || "Exact Location"}</span>
-              </div>
-              <div className="w-3 h-3 bg-[#0B192C] rotate-45 -mt-1.5 border-r-2 border-b-2 border-[#C5A059]" />
-            </div>
+      {/* Top Left: Coordinates HUD & Verified Badge */}
+      <div className="absolute top-3.5 left-3.5 z-10 flex flex-col space-y-1.5 pointer-events-auto">
+        <div className="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-md border border-slate-200 text-xs">
+          <div className="flex items-center space-x-1.5 font-bold text-[#0B192C]">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Google Maps Verified Coordinates</span>
           </div>
-
-          {/* Top Left: Coordinates HUD & Verified Badge */}
-          <div className="absolute top-3.5 left-3.5 z-20 flex flex-col space-y-2">
-            <div className="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-md border border-slate-200 text-xs">
-              <div className="flex items-center space-x-1.5 font-bold text-[#0B192C]">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Geocoded Property Coordinates</span>
-              </div>
-              <div className="text-[11px] font-mono text-slate-500 mt-0.5">
-                {latitude.toFixed(6)}° N, {longitude.toFixed(6)}° E
-              </div>
-              {address && (
-                <div className="text-[11px] text-slate-600 max-w-xs truncate mt-1">
-                  📍 {address}
-                </div>
-              )}
-            </div>
+          <div className="text-[11px] font-mono text-slate-500 mt-0.5">
+            {latitude.toFixed(6)}° N, {longitude.toFixed(6)}° E
           </div>
-
-          {/* Top Right: Layer Switcher (Roadmap / Satellite / Terrain) */}
-          <div className="absolute top-3.5 right-3.5 z-20 bg-white/95 backdrop-blur-md p-1 rounded-xl shadow-md border border-slate-200 flex items-center space-x-1 text-xs">
-            <button
-              type="button"
-              onClick={() => setMapType("roadmap")}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-colors ${
-                mapType === "roadmap"
-                  ? "bg-[#0B192C] text-white"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              Map
-            </button>
-            <button
-              type="button"
-              onClick={() => setMapType("satellite")}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-colors ${
-                mapType === "satellite"
-                  ? "bg-[#0B192C] text-white"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              Satellite
-            </button>
-            <button
-              type="button"
-              onClick={() => setMapType("terrain")}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-colors ${
-                mapType === "terrain"
-                  ? "bg-[#0B192C] text-white"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              Terrain
-            </button>
-          </div>
-
-          {/* Bottom Right: Zoom Controls */}
-          {interactive && (
-            <div className="absolute bottom-16 right-3.5 z-20 flex flex-col space-y-1 bg-white/95 backdrop-blur-md p-1 rounded-xl shadow-md border border-slate-200">
-              <button
-                type="button"
-                onClick={handleZoomIn}
-                className="p-2 hover:bg-slate-100 rounded-lg text-slate-700 transition-colors"
-                title="Zoom In"
-              >
-                <ZoomIn className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={handleZoomOut}
-                className="p-2 hover:bg-slate-100 rounded-lg text-slate-700 transition-colors"
-                title="Zoom Out"
-              >
-                <ZoomOut className="w-4 h-4" />
-              </button>
+          {address && (
+            <div className="text-[11px] text-slate-600 max-w-xs truncate mt-1">
+              📍 {address}
             </div>
           )}
         </div>
+      </div>
+
+      {/* Top Right: Layer Switcher (Map / Satellite / Terrain) */}
+      <div className="absolute top-3.5 right-3.5 z-10 bg-white/95 backdrop-blur-md p-1 rounded-xl shadow-md border border-slate-200 flex items-center space-x-1 text-xs">
+        <button
+          type="button"
+          onClick={() => setMapType("roadmap")}
+          className={`px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer ${
+            mapType === "roadmap"
+              ? "bg-[#0B192C] text-white"
+              : "text-slate-600 hover:bg-slate-100"
+          }`}
+        >
+          Map
+        </button>
+        <button
+          type="button"
+          onClick={() => setMapType("satellite")}
+          className={`px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer ${
+            mapType === "satellite"
+              ? "bg-[#0B192C] text-white"
+              : "text-slate-600 hover:bg-slate-100"
+          }`}
+        >
+          Satellite
+        </button>
+        <button
+          type="button"
+          onClick={() => setMapType("terrain")}
+          className={`px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer ${
+            mapType === "terrain"
+              ? "bg-[#0B192C] text-white"
+              : "text-slate-600 hover:bg-slate-100"
+          }`}
+        >
+          Terrain
+        </button>
+      </div>
+
+      {/* Bottom Right: Zoom & Fullscreen Controls */}
+      {interactive && (
+        <div className="absolute bottom-16 right-3.5 z-10 flex flex-col space-y-1 bg-white/95 backdrop-blur-md p-1 rounded-xl shadow-md border border-slate-200">
+          <button
+            type="button"
+            onClick={handleZoomIn}
+            className="p-2 hover:bg-slate-100 rounded-lg text-slate-700 transition-colors cursor-pointer"
+            title="Zoom In"
+          >
+            <ZoomIn className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={handleZoomOut}
+            className="p-2 hover:bg-slate-100 rounded-lg text-slate-700 transition-colors cursor-pointer"
+            title="Zoom Out"
+          >
+            <ZoomOut className="w-4 h-4" />
+          </button>
+          <div className="w-full h-px bg-slate-200" />
+          <button
+            type="button"
+            onClick={handleToggleFullscreen}
+            className="p-2 hover:bg-slate-100 rounded-lg text-slate-700 transition-colors cursor-pointer"
+            title="Toggle Fullscreen"
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+        </div>
       )}
 
-      {/* Bottom Bar: "Get Directions" Action Button & Google Maps Deep Link */}
-      <div className="bg-white px-4 py-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 z-20 relative">
+      {/* Bottom Bar: Action buttons */}
+      <div className="bg-white px-4 py-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 z-10 relative">
         <div className="flex items-center space-x-2 text-xs text-slate-600">
-          <Compass className="w-4 h-4 text-[#C5A059]" />
-          <span>Interactive Location & Satellite View</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Interactive Google Map & Satellite View</span>
         </div>
 
         <div className="flex items-center space-x-2 w-full sm:w-auto">
@@ -250,6 +275,16 @@ export default function GoogleMap({
           >
             <Navigation className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>Get Directions</span>
+          </a>
+
+          <a
+            href={streetViewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-3 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold rounded-xl text-xs transition-colors"
+            title="Open Street View 360"
+          >
+            <span>Street View</span>
           </a>
 
           <a
@@ -265,10 +300,4 @@ export default function GoogleMap({
       </div>
     </div>
   );
-}
-
-declare global {
-  interface Window {
-    google: any;
-  }
 }

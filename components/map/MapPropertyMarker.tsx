@@ -41,7 +41,7 @@ export default function MapPropertyMarker({
       {/* Floating Preview Card on Active Marker */}
       {isActive && (
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-40 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95">
-          <div className="relative aspect-16/9 w-full bg-slate-100">
+          <div className="relative aspect-video w-full bg-slate-100">
             <Image
               src={mainImage}
               alt={property.title}

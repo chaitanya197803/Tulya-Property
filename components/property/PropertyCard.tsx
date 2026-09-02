@@ -66,7 +66,7 @@ export default function PropertyCard({ property, compact = false }: PropertyCard
         </Link>
 
         {/* Gradient Overlay for Top Badges */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
 
         {/* Top Badges */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-auto">
