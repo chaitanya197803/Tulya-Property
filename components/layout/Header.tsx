@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Building2,
   Heart,
@@ -14,13 +14,21 @@ import {
   Search,
   ShieldCheck,
   PhoneCall,
+  LogOut,
 } from "lucide-react";
+import Image from "next/image";
 import { getSavedPropertyIds } from "../../lib/storage";
+import { createClient } from "@/utils/supabase/client";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createClient();
+
   const [savedCount, setSavedCount] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<{ full_name?: string; role?: string } | null>(null);
 
   useEffect(() => {
     // Initial saved count
@@ -36,6 +44,70 @@ export default function Header() {
       window.removeEventListener("tulya:saved-changed", handleSavedChange);
     };
   }, []);
+
+  // Supabase Auth State listener
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name, role")
+          .eq("id", user.id)
+          .single();
+
+        if (profile) {
+          setUserProfile(profile);
+        } else {
+          setUserProfile({
+            full_name: user.user_metadata?.full_name,
+            role: user.user_metadata?.role,
+          });
+        }
+      } else {
+        setUserProfile(null);
+      }
+    };
+
+    fetchUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name, role")
+          .eq("id", session.user.id)
+          .single();
+
+        setUserProfile(
+          profile || {
+            full_name: session.user.user_metadata?.full_name,
+            role: session.user.user_metadata?.role,
+          }
+        );
+      } else {
+        setUserProfile(null);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setUserProfile(null);
+    router.refresh();
+  };
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -90,20 +162,27 @@ export default function Header() {
           <div className="flex items-center justify-between h-18">
             {/* Left: Brand Logo */}
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 rounded-lg bg-[#0B192C] flex items-center justify-center text-white shadow-md border border-[#C5A059]/40 group-hover:border-[#C5A059] transition-all">
-                <Building2 className="w-6 h-6 text-[#C5A059]" />
+              <div className="relative h-11 w-11 rounded-xl bg-slate-50 flex items-center justify-center p-1 border border-slate-200 group-hover:border-[#0B192C]/40 transition-all shadow-xs overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="Property Engine"
+                  width={44}
+                  height={44}
+                  priority
+                  className="object-contain w-full h-full"
+                />
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center space-x-1.5">
                   <span className="text-xl font-extrabold tracking-tight text-[#0B192C]">
-                    TULYA
+                    PROPERTY
                   </span>
                   <span className="text-xl font-light tracking-tight text-[#C5A059]">
-                    FINANCE
+                    ENGINE
                   </span>
                 </div>
                 <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 -mt-1">
-                  Property Marketplace
+                  Real Estate Marketplace
                 </span>
               </div>
             </Link>
@@ -154,14 +233,34 @@ export default function Header() {
                 )}
               </Link>
 
-              {/* Login Button */}
-              <Link
-                href="/login"
-                className="hidden md:flex items-center space-x-1.5 px-3.5 py-2 text-sm font-medium text-[#0B192C] hover:bg-slate-100 rounded-lg transition-colors"
-              >
-                <User className="w-4 h-4 text-slate-500" />
-                <span>Login</span>
-              </Link>
+              {/* User Account / Auth Section */}
+              {user ? (
+                <div className="hidden md:flex items-center space-x-2 bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5">
+                  <div className="flex flex-col text-left">
+                    <span className="text-xs font-bold text-[#0B192C] leading-none max-w-30 truncate">
+                      {userProfile?.full_name || user.email?.split("@")[0]}
+                    </span>
+                    <span className="text-[10px] text-[#C5A059] font-bold uppercase tracking-wider">
+                      {userProfile?.role || "Member"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleSignOut}
+                    title="Sign Out"
+                    className="p-1 hover:text-rose-600 text-slate-400 transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="hidden md:flex items-center space-x-1.5 px-3.5 py-2 text-sm font-medium text-[#0B192C] hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  <User className="w-4 h-4 text-slate-500" />
+                  <span>Login</span>
+                </Link>
+              )}
 
               {/* Post Property CTA */}
               <Link
@@ -221,13 +320,32 @@ export default function Header() {
             </div>
 
             <div className="pt-3 border-t border-slate-100 flex flex-col space-y-2">
-              <Link
-                href="/login"
-                className="w-full flex items-center justify-center space-x-2 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 rounded-lg"
-              >
-                <User className="w-4 h-4" />
-                <span>Login / Register</span>
-              </Link>
+              {user ? (
+                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                  <div>
+                    <div className="text-sm font-bold text-[#0B192C]">
+                      {userProfile?.full_name || user.email}
+                    </div>
+                    <div className="text-xs text-[#C5A059] font-semibold uppercase">
+                      Role: {userProfile?.role || "Member"}
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleSignOut}
+                    className="px-3 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-xs font-bold"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="w-full flex items-center justify-center space-x-2 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 rounded-lg"
+                >
+                  <User className="w-4 h-4" />
+                  <span>Login / Register</span>
+                </Link>
+              )}
               <Link
                 href="/admin"
                 className="w-full text-center py-2 text-xs font-semibold text-[#C5A059] bg-[#0B192C] rounded-lg"

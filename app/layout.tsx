@@ -6,13 +6,13 @@ import MobileNav from "../components/layout/MobileNav";
 
 export const metadata: Metadata = {
   title: {
-    default: "Tulya Finance Properties — Real Estate Marketplace | Raipur & Chhattisgarh",
-    template: "%s | Tulya Finance Properties",
+    default: "Property Engine — Real Estate Marketplace | Raipur & Chhattisgarh",
+    template: "%s | Property Engine",
   },
   description:
-    "Explore verified residential plots, luxury villas, modern flats, commercial spaces, and farm land in Raipur, Naya Raipur, Bhilai, and Durg with Tulya Finance.",
+    "Explore verified residential plots, luxury villas, modern flats, commercial spaces, and farm land in Raipur, Naya Raipur, Bhilai, and Durg with Property Engine.",
   keywords: [
-    "Tulya Finance",
+    "Property Engine",
     "Raipur real estate",
     "Naya Raipur plots",
     "flats in Raipur",
@@ -20,13 +20,13 @@ export const metadata: Metadata = {
     "commercial property Raipur",
     "property marketplace Chhattisgarh",
   ],
-  authors: [{ name: "Tulya Finance Properties" }],
+  authors: [{ name: "Property Engine" }],
   openGraph: {
-    title: "Tulya Finance Properties — Central India's Premier Property Marketplace",
+    title: "Property Engine — Central India's Premier Property Marketplace",
     description:
       "Discover verified plots, villas, flats, and commercial properties across Raipur and Chhattisgarh.",
-    url: "https://tulyafinance.com",
-    siteName: "Tulya Finance Properties",
+    url: "https://propertyengine.in",
+    siteName: "Property Engine",
     locale: "en_IN",
     type: "website",
   },

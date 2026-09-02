@@ -3,7 +3,7 @@ import { initialProperties } from "../data/properties";
 import { propertyCategories } from "../data/categories";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://tulyafinance.com";
+  const baseUrl = "https://propertyengine.in";
 
   // Static routes
   const staticRoutes = [

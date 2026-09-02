@@ -39,7 +39,7 @@ export default function EnquiryModal({
       propertyPrice: property.price,
       name,
       mobile,
-      email: email || "customer@tulyafinance.com",
+      email: email || "customer@propertyengine.in",
       message,
       preferredVisitDate: preferredDate || undefined,
       enquiryType,
@@ -55,7 +55,7 @@ export default function EnquiryModal({
         <div className="bg-[#0B192C] text-white p-5 flex items-center justify-between">
           <div>
             <span className="text-xs uppercase tracking-wider font-bold text-[#C5A059]">
-              Tulya Finance Advisory
+              Property Engine Advisory
             </span>
             <h3 className="text-base font-bold text-white mt-0.5 line-clamp-1">
               {property.title}
@@ -79,7 +79,7 @@ export default function EnquiryModal({
               </div>
               <h3 className="text-xl font-extrabold text-slate-900">Enquiry Received!</h3>
               <p className="text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
-                Thank you. Our Tulya Finance team will contact you shortly on your registered number
+                Thank you. Our Property Engine team will contact you shortly on your registered number
                 to coordinate details.
               </p>
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500">
@@ -99,103 +99,103 @@ export default function EnquiryModal({
               <div className="grid grid-cols-2 gap-2 pb-2">
                 <button
                   type="button"
-                  onClick={() => setEnquiryType("General Enquiry")}
-                  className={`py-2 px-3 rounded-xl text-xs font-bold border transition-colors ${
-                    enquiryType === "General Enquiry"
-                      ? "bg-[#0B192C] text-white border-[#0B192C]"
-                      : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
-                  }`}
-                >
-                  General Enquiry
-                </button>
-                <button
-                  type="button"
                   onClick={() => setEnquiryType("Site Visit Request")}
-                  className={`py-2 px-3 rounded-xl text-xs font-bold border transition-colors ${
+                  className={`py-2 px-3 rounded-xl text-xs font-bold transition-all ${
                     enquiryType === "Site Visit Request"
-                      ? "bg-[#0B192C] text-white border-[#0B192C]"
-                      : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      ? "bg-[#0B192C] text-white shadow-xs"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }`}
                 >
                   Schedule Site Visit
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setEnquiryType("General Enquiry")}
+                  className={`py-2 px-3 rounded-xl text-xs font-bold transition-all ${
+                    enquiryType === "General Enquiry"
+                      ? "bg-[#0B192C] text-white shadow-xs"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  General Enquiry
+                </button>
               </div>
 
-              {/* Name */}
-              <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
-                  Full Name *
-                </label>
-                <div className="relative flex items-center">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3.5" />
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Ramesh Patel"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
-                  />
-                </div>
-              </div>
-
-              {/* Mobile Number */}
-              <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
-                  Mobile Number (WhatsApp Ready) *
-                </label>
-                <div className="relative flex items-center">
-                  <Phone className="w-4 h-4 text-slate-400 absolute left-3.5" />
-                  <input
-                    type="tel"
-                    required
-                    value={mobile}
-                    onChange={(e) => setMobile(e.target.value)}
-                    placeholder="+91 98271 00000"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
-                  />
-                </div>
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
-                  Email Address
-                </label>
-                <div className="relative flex items-center">
-                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@example.com"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
-                  />
-                </div>
-              </div>
-
-              {/* Preferred Date if Site Visit */}
-              {enquiryType === "Site Visit Request" && (
+              {/* Name & Mobile */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
-                    Preferred Date for Site Visit
+                    Your Name *
                   </label>
                   <div className="relative flex items-center">
-                    <Calendar className="w-4 h-4 text-slate-400 absolute left-3.5" />
+                    <User className="w-4 h-4 text-slate-400 absolute left-3" />
+                    <input
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Mobile Number *
+                  </label>
+                  <div className="relative flex items-center">
+                    <Phone className="w-4 h-4 text-slate-400 absolute left-3" />
+                    <input
+                      type="tel"
+                      required
+                      value={mobile}
+                      onChange={(e) => setMobile(e.target.value)}
+                      placeholder="+91 98765 43210"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Email & Date */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Email Address
+                  </label>
+                  <div className="relative flex items-center">
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="name@example.com"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Preferred Visit Date
+                  </label>
+                  <div className="relative flex items-center">
+                    <Calendar className="w-4 h-4 text-slate-400 absolute left-3" />
                     <input
                       type="date"
                       value={preferredDate}
                       onChange={(e) => setPreferredDate(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0B192C]"
                     />
                   </div>
                 </div>
-              )}
+              </div>
 
               {/* Message */}
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
-                  Message / Questions
+                  Special Notes / Queries
                 </label>
                 <textarea
                   rows={3}
@@ -215,7 +215,7 @@ export default function EnquiryModal({
               </button>
 
               <p className="text-[11px] text-center text-slate-400">
-                Your contact details are encrypted and shared only with certified Tulya advisors.
+                Your contact details are encrypted and shared only with certified Property Engine advisors.
               </p>
             </form>
           )}

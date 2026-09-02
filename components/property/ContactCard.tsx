@@ -42,12 +42,12 @@ export default function ContactCard({ property }: ContactCardProps) {
         {/* Agent / Desk Header */}
         <div className="flex items-center space-x-3.5 pb-4 border-b border-slate-100">
           <div className="w-12 h-12 rounded-full bg-[#0B192C] text-[#C5A059] flex items-center justify-center font-black text-lg border-2 border-[#C5A059] shadow-sm">
-            TF
+            PE
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
               <span className="font-bold text-slate-900 text-sm">
-                {property.ownerName || "Tulya Finance Property Desk"}
+                {property.ownerName || "Property Engine Property Desk"}
               </span>
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
             </div>

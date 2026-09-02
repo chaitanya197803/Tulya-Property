@@ -424,7 +424,7 @@ export default function PostPropertyPage() {
           </span>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B192C]">
-            Post Your Property on Tulya Marketplace
+            Post Your Property on Property Engine Marketplace
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-500">
@@ -449,7 +449,7 @@ export default function PostPropertyPage() {
             <strong>
               {previewProperty.title}
             </strong>{" "}
-            is now live on Tulya Finance Marketplace
+            is now live on Property Engine Marketplace
             and active in the inventory database.
           </p>
 
@@ -501,7 +501,7 @@ export default function PostPropertyPage() {
         </span>
 
         <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B192C]">
-          Post Your Property on Tulya Marketplace
+          Post Your Property on Property Engine Marketplace
         </h1>
 
         <p className="text-xs sm:text-sm text-slate-500">
@@ -1402,7 +1402,7 @@ export default function PostPropertyPage() {
 
                 <div>
                   <strong>
-                    Tulya Finance Quality Pledge:
+                    Property Engine Quality Pledge:
                   </strong>
 
                   <p className="mt-1">

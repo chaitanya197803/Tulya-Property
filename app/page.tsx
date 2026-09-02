@@ -217,15 +217,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. WHY TULYA FINANCE (Trust & Value Indicators) */}
+      {/* 6. WHY PROPERTY ENGINE (Trust & Value Indicators) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-3xl border border-slate-200/90 p-8 sm:p-12 shadow-sm">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
             <span className="text-xs font-bold uppercase tracking-wider text-[#C5A059]">
-              The Tulya Finance Advantage
+              The Property Engine Advantage
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B192C]">
-              Why Smart Buyers & Investors Choose Tulya Finance
+              Why Smart Buyers & Investors Choose Property Engine
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
               We combine cutting-edge property discovery with transparent title verification and
@@ -291,7 +291,7 @@ export default function HomePage() {
             </span>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Post Your Property on Tulya Finance Marketplace For Free
+              Post Your Property on Property Engine Marketplace For Free
             </h2>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">

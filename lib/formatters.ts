@@ -80,9 +80,9 @@ export function generateWhatsAppLink(
   propertyId?: string
 ): string {
   const cleanPhone = phone.replace(/[^0-9]/g, "");
-  let message = "Hello Tulya Finance, I am interested in exploring property opportunities.";
+  let message = "Hello Property Engine, I am interested in exploring property opportunities.";
   if (propertyTitle && propertyId) {
-    message = `Hello Tulya Finance, I am interested in ${propertyTitle}. Property ID: ${propertyId}. Please share more details.`;
+    message = `Hello Property Engine, I am interested in ${propertyTitle}. Property ID: ${propertyId}. Please share more details.`;
   }
   return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }

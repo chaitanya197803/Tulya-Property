@@ -28,7 +28,7 @@ export default function EMICalculator({ propertyPrice }: EMICalculatorProps) {
           </div>
           <div>
             <h3 className="font-bold text-slate-900 text-base">Home Loan EMI Calculator</h3>
-            <p className="text-xs text-slate-500">Provided in partnership with Tulya Home Loans</p>
+            <p className="text-xs text-slate-500">Provided in partnership with Property Engine Home Loans</p>
           </div>
         </div>
         <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
@@ -118,7 +118,7 @@ export default function EMICalculator({ propertyPrice }: EMICalculatorProps) {
             href="tel:+919876543210"
             className="block w-full py-2.5 bg-[#0B192C] hover:bg-[#1E3E62] text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
           >
-            Check Loan Eligibility with Tulya Finance
+            Check Loan Eligibility with Property Engine
           </a>
         </div>
       </div>

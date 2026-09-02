@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin"],
     },
-    sitemap: "https://tulyafinance.com/sitemap.xml",
+    sitemap: "https://propertyengine.in/sitemap.xml",
   };
 }

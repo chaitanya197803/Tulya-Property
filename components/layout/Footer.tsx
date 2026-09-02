@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
-  Building2,
   Phone,
   Mail,
   MapPin,
@@ -67,16 +67,22 @@ export default function Footer() {
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-white border border-[#C5A059]">
-                <Building2 className="w-6 h-6 text-[#C5A059]" />
+              <div className="relative h-12 w-12 rounded-xl bg-white flex items-center justify-center p-1 border border-[#C5A059]/50 shadow-md overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="Property Engine"
+                  width={48}
+                  height={48}
+                  className="object-contain w-full h-full"
+                />
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center space-x-1.5">
                   <span className="text-2xl font-extrabold tracking-tight text-white">
-                    TULYA
+                    PROPERTY
                   </span>
                   <span className="text-2xl font-light tracking-tight text-[#C5A059]">
-                    FINANCE
+                    ENGINE
                   </span>
                 </div>
                 <span className="text-[11px] uppercase tracking-wider font-medium text-slate-400">
@@ -85,7 +91,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              Tulya Finance Properties is Central India's premier digital real-estate marketplace.
+              Property Engine is Central India&apos;s premier digital real-estate marketplace.
               Browse verified residential plots, luxury villas, modern flats, commercial spaces, and
               agricultural acreage across Raipur, Atal Nagar, Bhilai, and Durg.
             </p>
@@ -211,7 +217,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/about" className="hover:text-white transition-colors">
-                  About Tulya Finance
+                  About Property Engine
                 </Link>
               </li>
               <li>
@@ -255,7 +261,7 @@ export default function Footer() {
           <div className="flex items-center space-x-2.5">
             <Mail className="w-4 h-4 text-[#C5A059] shrink-0" />
             <span>
-              <strong>Email Support:</strong> properties@tulyafinance.com / info@tulyafinance.com
+              <strong>Email Support:</strong> properties@propertyengine.in / info@propertyengine.in
             </span>
           </div>
           <div className="flex items-center space-x-2.5">
@@ -268,7 +274,7 @@ export default function Footer() {
 
         {/* Bottom Legal & Copyright */}
         <div className="mt-8 pt-6 border-t border-slate-800/50 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Tulya Finance Properties Ltd. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Property Engine Ltd. All rights reserved.</p>
           <div className="flex items-center space-x-6">
             <Link href="/about" className="hover:text-slate-200 transition-colors">
               Privacy Policy

@@ -37,7 +37,7 @@ export default function ContactPage() {
           Get in Touch
         </span>
         <h1 className="text-3xl font-black text-[#0B192C]">
-          Contact Tulya Finance Properties
+          Contact Property Engine
         </h1>
         <p className="text-xs sm:text-sm text-slate-500">
           Have questions about a property, legal title verification, or home loan eligibility? Reach out to our dedicated Raipur advisory team.
@@ -58,7 +58,7 @@ export default function ContactPage() {
                 <MapPin className="w-5 h-5 text-[#C5A059] shrink-0 mt-0.5" />
                 <div>
                   <strong className="text-white block text-sm mb-1">Raipur Office:</strong>
-                  4th Floor, Tulya Towers, VIP Road, Near Magneto The Mall, Raipur, Chhattisgarh 492006
+                  4th Floor, Property Engine Towers, VIP Road, Near Magneto The Mall, Raipur, Chhattisgarh 492006
                 </div>
               </div>
 
@@ -74,7 +74,7 @@ export default function ContactPage() {
                 <Mail className="w-5 h-5 text-[#C5A059] shrink-0" />
                 <div>
                   <strong className="text-white block text-sm">Email Inquiries:</strong>
-                  properties@tulyafinance.com / info@tulyafinance.com
+                  properties@propertyengine.in / info@propertyengine.in
                 </div>
               </div>
 
@@ -115,7 +115,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900">Message Sent!</h3>
               <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Thank you for contacting Tulya Finance. One of our senior property advisors in Raipur will reach out to you within 30 minutes.
+                Thank you for contacting Property Engine. One of our senior property advisors in Raipur will reach out to you within 30 minutes.
               </p>
               <button
                 type="button"
@@ -202,7 +202,7 @@ export default function ContactPage() {
       <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-slate-900 text-base">Tulya Finance HQ Location</h3>
+            <h3 className="font-bold text-slate-900 text-base">Property Engine HQ Location</h3>
             <p className="text-xs text-slate-500">VIP Road, Near Magneto Mall, Raipur, Chhattisgarh</p>
           </div>
         </div>
@@ -210,8 +210,8 @@ export default function ContactPage() {
         <GoogleMap
           latitude={21.2185}
           longitude={81.6912}
-          address="Tulya Towers, VIP Road, Raipur, Chhattisgarh 492006"
-          propertyTitle="Tulya Finance Properties Corporate Headquarters"
+          address="Property Engine Towers, VIP Road, Raipur, Chhattisgarh 492006"
+          propertyTitle="Property Engine Corporate Headquarters"
           zoom={16}
           height="340px"
         />

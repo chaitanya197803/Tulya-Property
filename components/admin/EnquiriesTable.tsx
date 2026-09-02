@@ -93,7 +93,7 @@ export default function EnquiriesTable({ enquiries, onRefresh }: EnquiriesTableP
             ) : (
               filteredEnquiries.map((enq) => {
                 const whatsappUrl = `https://wa.me/${enq.mobile.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                  `Hello ${enq.name}, thank you for contacting Tulya Finance regarding ${enq.propertyTitle}. When is a good time to speak?`
+                  `Hello ${enq.name}, thank you for contacting Property Engine regarding ${enq.propertyTitle}. When is a good time to speak?`
                 )}`;
 
                 return (

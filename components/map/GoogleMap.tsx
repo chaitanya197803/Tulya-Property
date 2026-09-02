@@ -109,7 +109,7 @@ export default function GoogleMap({
 
       const popupHtml = `
         <div style="padding: 10px; font-family: inherit;">
-          <strong style="color: #0B192C; font-size: 13px; display: block; margin-bottom: 4px;">${propertyTitle || "Tulya Verified Property"}</strong>
+          <strong style="color: #0B192C; font-size: 13px; display: block; margin-bottom: 4px;">${propertyTitle || "Property Engine Verified Property"}</strong>
           <p style="margin: 0 0 8px; font-size: 11px; color: #475569;">${address || ""}</p>
           <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #0B192C; color: #ffffff; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none;">
             Get Directions ↗

@@ -19,13 +19,13 @@ export default function AboutPage() {
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <span className="inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-[#C5A059]/15 text-[#C5A059] border border-[#C5A059]/30">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>About Tulya Finance Properties</span>
+          <span>About Property Engine</span>
         </span>
         <h1 className="text-3xl sm:text-4xl font-black text-[#0B192C] tracking-tight">
           Pioneering Transparent Real Estate in Central India
         </h1>
         <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-          Tulya Finance Properties brings fintech transparency, rigorous title verification, and
+          Property Engine brings fintech transparency, rigorous title verification, and
           e-commerce speed to property discovery across Raipur, Naya Raipur, Bhilai, and Durg.
         </p>
       </div>
@@ -60,7 +60,7 @@ export default function AboutPage() {
           </div>
           <h3 className="text-lg font-bold text-slate-900">Fintech Advisory</h3>
           <p className="text-xs text-slate-500 leading-relaxed">
-            Direct integration with Tulya Home Loans provides real-time interest rate discovery,
+            Direct integration with premier Home Loans partners provides real-time interest rate discovery,
             eligibility evaluation, and fast-track loan disbursals.
           </p>
         </div>
@@ -93,7 +93,7 @@ export default function AboutPage() {
         <div className="space-y-1">
           <h3 className="text-lg font-bold text-slate-900">Visit Our Corporate Headquarters</h3>
           <p className="text-xs text-slate-500">
-            4th Floor, Tulya Towers, VIP Road, Near Magneto Mall, Raipur, Chhattisgarh 492006
+            4th Floor, Property Engine Towers, VIP Road, Near Magneto Mall, Raipur, Chhattisgarh 492006
           </p>
         </div>
         <Link

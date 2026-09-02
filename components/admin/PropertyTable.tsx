@@ -265,7 +265,7 @@ export default function PropertyTable({ properties, onRefresh }: PropertyTablePr
       {/* Pagination Footer */}
       <div className="flex items-center justify-between text-xs text-slate-500 pt-2">
         <span>Showing <strong>{filteredProperties.length}</strong> listings</span>
-        <span>Tulya Finance Real-Time Inventory Control</span>
+        <span>Property Engine Real-Time Inventory Control</span>
       </div>
     </div>
   );

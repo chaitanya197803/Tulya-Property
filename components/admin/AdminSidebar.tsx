@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
-  Building2,
   LayoutDashboard,
   Building,
   PlusCircle,
@@ -44,16 +44,22 @@ export default function AdminSidebar({
         {/* Brand Header */}
         <div className="pb-6 border-b border-slate-800">
           <Link href="/" className="flex items-center space-x-2.5">
-            <div className="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-[#C5A059] border border-[#C5A059]/40">
-              <Building2 className="w-5 h-5" />
+            <div className="relative w-9 h-9 rounded-lg bg-white flex items-center justify-center p-0.5 border border-[#C5A059]/40 overflow-hidden shrink-0">
+              <Image
+                src="/logo.png"
+                alt="Property Engine"
+                width={36}
+                height={36}
+                className="object-contain w-full h-full"
+              />
             </div>
             <div>
               <div className="flex items-center space-x-1">
-                <span className="font-extrabold text-white text-base tracking-tight">TULYA</span>
-                <span className="font-light text-[#C5A059] text-base tracking-tight">ADMIN</span>
+                <span className="font-extrabold text-white text-sm tracking-tight">ENGINE</span>
+                <span className="font-light text-[#C5A059] text-sm tracking-tight">ADMIN</span>
               </div>
-              <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block -mt-1">
-                Enterprise Portal
+              <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block -mt-0.5">
+                Property Engine Portal
               </span>
             </div>
           </Link>

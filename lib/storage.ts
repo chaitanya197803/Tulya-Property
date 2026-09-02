@@ -46,7 +46,7 @@ const seedEnquiries: Enquiry[] = [
     name: "Sunita Verma",
     mobile: "+91 97555 12890",
     email: "sunitav@outlook.com",
-    message: "Looking for immediate possession and home loan assistance through Tulya Finance.",
+    message: "Looking for immediate possession and home loan assistance through Property Engine.",
     preferredVisitDate: "2026-09-05",
     enquiryType: "Price Negotiation",
     status: "Visit Scheduled",
